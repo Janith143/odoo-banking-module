@@ -120,8 +120,8 @@
                     <filter string="Matured" name="matured" 
                             domain="[('status', '=', 'matured')]"/>
                     <filter string="Maturing This Month" name="maturing_soon" 
-                            domain="[('maturity_date', '&gt;=', datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0)),
-                                     ('maturity_date', '&lt;=', (datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0) + relativedelta(months=1, days=-1)))]"/>
+                            domain="[('maturity_date', '&gt;=', context_today().strftime('%Y-%m-01')),
+                                     ('maturity_date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
                     <group>
                         <filter string="FD Type" name="group_type" 
                                 context="{'group_by': 'fd_type'}"/>

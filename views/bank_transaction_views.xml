@@ -99,10 +99,10 @@
                     <field name="customer_id"/>
                     <field name="reference"/>
                     <filter string="Today" name="today" 
-                            domain="[('transaction_date', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)), 
-                                     ('transaction_date', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]"/>
+                            domain="[('transaction_date', '&gt;=', context_today()),
+                                     ('transaction_date', '&lt;', context_today() + relativedelta(days=1))]"/>
                     <filter string="This Month" name="this_month" 
-                            domain="[('transaction_date', '&gt;=', datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0))]"/>
+                            domain="[('transaction_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
                     <filter string="Deposits" name="deposits" 
                             domain="[('transaction_type', '=', 'deposit')]"/>
                     <filter string="Withdrawals" name="withdrawals" 

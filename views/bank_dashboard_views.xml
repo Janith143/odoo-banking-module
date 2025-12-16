@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Dashboard Kanban View (Admin) -->
+        <record id="view_bank_dashboard_kanban" model="ir.ui.view">
+            <field name="name">bank.dashboard.kanban</field>
+            <field name="model">bank.account</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard">
+                    <field name="account_number"/>
+                    <field name="balance"/>
+                    <field name="status"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary"><field name="account_number"/></div>
+                                        <div class="o_secondary"><field name="customer_id"/></div>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button class="btn btn-primary" type="object" name="action_view_transactions">
+                                                Transactions
+                                            </button>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <field name="balance" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_footer">
+                                    <field name="status" widget="badge"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Audit Log Tree View -->
+        <record id="view_bank_audit_log_tree" model="ir.ui.view">
+            <field name="name">bank.audit.log.tree</field>
+            <field name="model">bank.audit.log</field>
+            <field name="arch" type="xml">
+                <list string="Audit Logs" create="false" edit="false" delete="false">
+                    <field name="timestamp"/>
+                    <field name="user_name"/>
+                    <field name="action"/>
+                    <field name="model_name"/>
+                    <field name="description"/>
+                    <field name="severity" widget="badge" 
+                           decoration-info="severity == 'info'"
+                           decoration-warning="severity == 'warning'"
+                           decoration-danger="severity == 'error'"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Audit Log Search View -->
+        <record id="view_bank_audit_log_search" model="ir.ui.view">
+            <field name="name">bank.audit.log.search</field>
+            <field name="model">bank.audit.log</field>
+            <field name="arch" type="xml">
+                <search string="Search Audit Logs">
+                    <field name="user_name"/>
+                    <field name="model_name"/>
+                    <field name="description"/>
+                    <filter string="Today" name="today" 
+                            domain="[('timestamp', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0))]"/>
+                    <filter string="This Week" name="this_week" 
+                            domain="[('timestamp', '&gt;=', (datetime.datetime.now() - datetime.timedelta(days=7)))]"/>
+                    <filter string="Errors" name="errors" 
+                            domain="[('severity', 'in', ['error', 'critical'])]"/>
+                    <group>
+                        <filter string="User" name="group_user" 
+                                context="{'group_by': 'user_id'}"/>
+                        <filter string="Action" name="group_action" 
+                                context="{'group_by': 'action'}"/>
+                        <filter string="Model" name="group_model" 
+                                context="{'group_by': 'model_name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Audit Log Action -->
+        <record id="action_bank_audit_log" model="ir.actions.act_window">
+            <field name="name">Audit Logs</field>
+            <field name="res_model">bank.audit.log</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'search_default_today': 1}</field>
+        </record>
+        
+        <!-- Dashboard Action -->
+        <record id="action_bank_dashboard" model="ir.actions.act_window">
+            <field name="name">Banking Dashboard</field>
+            <field name="res_model">bank.account</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+        </record>
+        
+    </data>
+</odoo>

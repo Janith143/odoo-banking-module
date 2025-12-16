@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <template id="report_transaction_receipt">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="text-center">
+                                <h2>Transaction Receipt</h2>
+                                <h4><span t-field="o.transaction_number"/></h4>
+                            </div>
+                            
+                            <div class="row mt32 mb32">
+                                <div class="col-12">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Transaction Date:</strong></td>
+                                            <td><span t-field="o.transaction_date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Account Number:</strong></td>
+                                            <td><span t-field="o.account_id.account_number"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Customer Name:</strong></td>
+                                            <td><span t-field="o.customer_id.full_name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Transaction Type:</strong></td>
+                                            <td><span t-field="o.transaction_type"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Amount:</strong></td>
+                                            <td>
+                                                <strong>
+                                                    <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Balance Before:</strong></td>
+                                            <td><span t-field="o.balance_before" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Balance After:</strong></td>
+                                            <td><span t-field="o.balance_after" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                        </tr>
+                                        <tr t-if="o.description">
+                                            <td><strong>Description:</strong></td>
+                                            <td><span t-field="o.description"/></td>
+                                        </tr>
+                                        <tr t-if="o.reference">
+                                            <td><strong>Reference:</strong></td>
+                                            <td><span t-field="o.reference"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Status:</strong></td>
+                                            <td><span t-field="o.status"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt64">
+                                <div class="col-12 text-center">
+                                    <p class="text-muted">
+                                        Thank you for banking with us!<br/>
+                                        This is a computer-generated receipt and does not require a signature.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>

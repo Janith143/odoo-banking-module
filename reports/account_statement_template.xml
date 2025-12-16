@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <template id="report_account_statement">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Account Statement</h2>
+                            
+                            <div class="row mt32 mb32">
+                                <div class="col-6">
+                                    <strong>Account Number:</strong> <span t-field="o.account_number"/><br/>
+                                    <strong>Account Name:</strong> <span t-field="o.account_name"/><br/>
+                                    <strong>Account Type:</strong> <span t-field="o.account_type"/><br/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Customer:</strong> <span t-field="o.customer_id.full_name"/><br/>
+                                    <strong>Statement Date:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/><br/>
+                                    <strong>Current Balance:</strong> <span t-field="o.balance" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/><br/>
+                                </div>
+                            </div>
+                            
+                            <h3>Recent Transactions</h3>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Transaction No.</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-end">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.transaction_ids.sorted(key=lambda r: r.transaction_date, reverse=True)[:20]" t-as="txn">
+                                        <tr>
+                                            <td><span t-field="txn.transaction_date"/></td>
+                                            <td><span t-field="txn.transaction_number"/></td>
+                                            <td><span t-field="txn.transaction_type"/></td>
+                                            <td><span t-field="txn.description"/></td>
+                                            <td class="text-end">
+                                                <span t-field="txn.amount" t-options="{'widget': 'monetary', 'display_currency': txn.currency_id}"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="txn.balance_after" t-options="{'widget': 'monetary', 'display_currency': txn.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p class="text-muted">
+                                        This is a computer-generated statement and does not require a signature.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>

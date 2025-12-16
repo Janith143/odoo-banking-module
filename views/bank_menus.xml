@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main Menu -->
+        <menuitem id="menu_bank_root" 
+                  name="Banking" 
+                  sequence="10" 
+                  web_icon="odoo_bank,static/description/icon.png"/>
+        
+        <!-- Customer Menu -->
+        <menuitem id="menu_bank_customers" 
+                  name="Customers" 
+                  parent="menu_bank_root" 
+                  sequence="10"/>
+        
+        <menuitem id="menu_bank_customer_list" 
+                  name="Customers" 
+                  parent="menu_bank_customers" 
+                  action="action_bank_customer" 
+                  sequence="10"/>
+        
+        <!-- Accounts Menu -->
+        <menuitem id="menu_bank_accounts" 
+                  name="Accounts" 
+                  parent="menu_bank_root" 
+                  sequence="20"/>
+        
+        <menuitem id="menu_bank_account_list" 
+                  name="Bank Accounts" 
+                  parent="menu_bank_accounts" 
+                  action="action_bank_account" 
+                  sequence="10"/>
+        
+        <menuitem id="menu_bank_transaction_list" 
+                  name="Transactions" 
+                  parent="menu_bank_accounts" 
+                  action="action_bank_transaction" 
+                  sequence="20"/>
+        
+        <!-- Transfers Menu -->
+        <menuitem id="menu_bank_transfers" 
+                  name="Transfers" 
+                  parent="menu_bank_root" 
+                  sequence="30"/>
+        
+        <menuitem id="menu_bank_transfer_list" 
+                  name="Money Transfers" 
+                  parent="menu_bank_transfers" 
+                  action="action_bank_transfer" 
+                  sequence="10"/>
+        
+        <!-- Loans Menu -->
+        <menuitem id="menu_bank_loans" 
+                  name="Loans" 
+                  parent="menu_bank_root" 
+                  sequence="40"/>
+        
+        <menuitem id="menu_bank_loan_list" 
+                  name="Loan Applications" 
+                  parent="menu_bank_loans" 
+                  action="action_bank_loan" 
+                  sequence="10"/>
+        
+        <!-- Fixed Deposits Menu -->
+        <menuitem id="menu_bank_fixed_deposits" 
+                  name="Fixed Deposits" 
+                  parent="menu_bank_root" 
+                  sequence="50"/>
+        
+        <menuitem id="menu_bank_fd_list" 
+                  name="Fixed Deposits" 
+                  parent="menu_bank_fixed_deposits" 
+                  action="action_bank_fixed_deposit" 
+                  sequence="10"/>
+        
+        <!-- Admin Menu -->
+        <menuitem id="menu_bank_admin" 
+                  name="Administration" 
+                  parent="menu_bank_root" 
+                  sequence="100" 
+                  groups="odoo_bank.group_bank_admin"/>
+        
+        <menuitem id="menu_bank_dashboard" 
+                  name="Dashboard" 
+                  parent="menu_bank_admin" 
+                  action="action_bank_dashboard" 
+                  sequence="10"/>
+        
+        <menuitem id="menu_bank_audit_logs" 
+                  name="Audit Logs" 
+                  parent="menu_bank_admin" 
+                  action="action_bank_audit_log" 
+                  sequence="20"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="menu_bank_configuration" 
+                  name="Configuration" 
+                  parent="menu_bank_root" 
+                  sequence="110" 
+                  groups="odoo_bank.group_bank_manager"/>
+        
+    </data>
+</odoo>

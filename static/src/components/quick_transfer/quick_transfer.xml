@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    
+    <t t-name="odoo_bank.QuickTransfer" owl="1">
+        <div class="o_quick_transfer">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Quick Transfer</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">From Account</label>
+                            <select class="form-select" t-model="state.fromAccount">
+                                <option value="">Select account...</option>
+                                <t t-foreach="state.accounts" t-as="account" t-key="account.id">
+                                    <option t-att-value="account.id">
+                                        <t t-esc="account.account_number"/> - <t t-esc="account.account_name"/> (Balance: $<t t-esc="account.balance.toFixed(2)"/>)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">To Account</label>
+                            <select class="form-select" t-model="state.toAccount">
+                                <option value="">Select account...</option>
+                                <t t-foreach="state.accounts" t-as="account" t-key="account.id">
+                                    <option t-att-value="account.id">
+                                        <t t-esc="account.account_number"/> - <t t-esc="account.account_name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" t-model="state.amount" 
+                                   placeholder="0.00" step="0.01" min="0"/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" t-model="state.description" 
+                                      rows="2" placeholder="Transfer description..."/>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary w-100" 
+                                t-on-click="submitTransfer" 
+                                t-att-disabled="state.loading">
+                            <t t-if="state.loading">
+                                <i class="fa fa-spinner fa-spin"/> Processing...
+                            </t>
+                            <t t-else="">
+                                <i class="fa fa-send"/> Submit Transfer
+                            </t>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

@@ -1,0 +1,21 @@
+.o_bank_dashboard {
+    padding: 20px;
+}
+
+.o_bank_dashboard .card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.o_bank_dashboard .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.o_quick_transfer {
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.o_quick_transfer .card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Email Template: KYC Approved -->
+        <record id="email_template_kyc_approved" model="mail.template">
+            <field name="name">KYC Approved</field>
+            <field name="model_id" ref="model_bank_customer"/>
+            <field name="subject">KYC Verification Approved - ${object.customer_id}</field>
+            <field name="email_from">${object.company_id.email or 'noreply@bank.com'}</field>
+            <field name="email_to">${object.email}</field>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #28a745;">KYC Verification Approved</h2>
+                    <p>Dear ${object.full_name},</p>
+                    <p>We are pleased to inform you that your KYC verification has been approved.</p>
+                    <p><strong>Customer ID:</strong> ${object.customer_id}</p>
+                    <p>You can now proceed to open bank accounts and access all banking services.</p>
+                    <p>Thank you for choosing our bank.</p>
+                    <p>Best regards,<br/>Banking Team</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Email Template: Account Activated -->
+        <record id="email_template_account_activated" model="mail.template">
+            <field name="name">Account Activated</field>
+            <field name="model_id" ref="model_bank_account"/>
+            <field name="subject">Account Activated - ${object.account_number}</field>
+            <field name="email_from">${object.company_id.email or 'noreply@bank.com'}</field>
+            <field name="email_to">${object.customer_email}</field>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #007bff;">Account Activated</h2>
+                    <p>Dear ${object.customer_id.full_name},</p>
+                    <p>Your bank account has been successfully activated.</p>
+                    <p><strong>Account Number:</strong> ${object.account_number}</p>
+                    <p><strong>Account Type:</strong> ${object.account_type}</p>
+                    <p><strong>Opening Date:</strong> ${object.opening_date}</p>
+                    <p>You can now start using your account for transactions.</p>
+                    <p>Best regards,<br/>Banking Team</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Email Template: Transfer Successful -->
+        <record id="email_template_transfer_success" model="mail.template">
+            <field name="name">Transfer Successful</field>
+            <field name="model_id" ref="model_bank_transfer"/>
+            <field name="subject">Transfer Successful - ${object.transfer_number}</field>
+            <field name="email_from">${object.company_id.email or 'noreply@bank.com'}</field>
+            <field name="email_to">${object.from_customer_id.email}</field>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #28a745;">Transfer Successful</h2>
+                    <p>Dear ${object.from_customer_id.full_name},</p>
+                    <p>Your transfer has been completed successfully.</p>
+                    <p><strong>Transfer Number:</strong> ${object.transfer_number}</p>
+                    <p><strong>Amount:</strong> ${object.amount} ${object.currency_id.name}</p>
+                    <p><strong>Date:</strong> ${object.transfer_date}</p>
+                    <p><strong>Reference:</strong> ${object.reference or 'N/A'}</p>
+                    <p>Thank you for using our services.</p>
+                    <p>Best regards,<br/>Banking Team</p>
+                </div>
+            </field>
+        </record>
+        
+        <!-- Email Template: Loan Approved -->
+        <record id="email_template_loan_approved" model="mail.template">
+            <field name="name">Loan Approved</field>
+            <field name="model_id" ref="model_bank_loan"/>
+            <field name="subject">Loan Application Approved - ${object.loan_number}</field>
+            <field name="email_from">${object.company_id.email or 'noreply@bank.com'}</field>
+            <field name="email_to">${object.customer_id.email}</field>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #28a745;">Loan Approved</h2>
+                    <p>Dear ${object.customer_id.full_name},</p>
+                    <p>Congratulations! Your loan application has been approved.</p>
+                    <p><strong>Loan Number:</strong> ${object.loan_number}</p>
+                    <p><strong>Loan Type:</strong> ${object.loan_type}</p>
+                    <p><strong>Approved Amount:</strong> ${object.approved_amount} ${object.currency_id.name}</p>
+                    <p><strong>Interest Rate:</strong> ${object.interest_rate}% p.a.</p>
+                    <p><strong>Tenure:</strong> ${object.tenure_months} months</p>
+                    <p><strong>EMI Amount:</strong> ${object.emi_amount} ${object.currency_id.name}</p>
+                    <p>The loan amount will be disbursed to your account shortly.</p>
+                    <p>Best regards,<br/>Banking Team</p>
+                </div>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

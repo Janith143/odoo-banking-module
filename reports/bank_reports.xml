@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Account Statement Report -->
+        <record id="action_report_account_statement" model="ir.actions.report">
+            <field name="name">Account Statement</field>
+            <field name="model">bank.account</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_bank.report_account_statement</field>
+            <field name="report_file">odoo_bank.report_account_statement</field>
+            <field name="binding_model_id" ref="model_bank_account"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- Transaction Receipt Report -->
+        <record id="action_report_transaction_receipt" model="ir.actions.report">
+            <field name="name">Transaction Receipt</field>
+            <field name="model">bank.transaction</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_bank.report_transaction_receipt</field>
+            <field name="report_file">odoo_bank.report_transaction_receipt</field>
+            <field name="binding_model_id" ref="model_bank_transaction"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- Loan Schedule Report -->
+        <record id="action_report_loan_schedule" model="ir.actions.report">
+            <field name="name">Loan Repayment Schedule</field>
+            <field name="model">bank.loan</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_bank.report_loan_schedule</field>
+            <field name="report_file">odoo_bank.report_loan_schedule</field>
+            <field name="binding_model_id" ref="model_bank_loan"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+    </data>
+</odoo>

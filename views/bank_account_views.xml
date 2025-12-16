@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Account Form View -->
+        <record id="view_bank_account_form" model="ir.ui.view">
+            <field name="name">bank.account.form</field>
+            <field name="model">bank.account</field>
+            <field name="arch" type="xml">
+                <form string="Bank Account">
+                    <header>
+                        <button name="action_activate" string="Activate" type="object" 
+                                class="oe_highlight" invisible="status != 'draft'" 
+                                groups="odoo_bank.group_bank_teller"/>
+                        <button name="action_freeze" string="Freeze" type="object" 
+                                invisible="status != 'active'" 
+                                groups="odoo_bank.group_bank_manager"/>
+                        <button name="action_close" string="Close Account" type="object" 
+                                invisible="status not in ['active', 'frozen']" 
+                                groups="odoo_bank.group_bank_manager"/>
+                        <field name="status" widget="statusbar" 
+                               statusbar_visible="draft,active,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_transactions" type="object" 
+                                    class="oe_stat_button" icon="fa-exchange">
+                                <field name="transaction_count" widget="statbutton" string="Transactions"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="account_number" readonly="1"/></h1>
+                            <h3><field name="account_name" placeholder="Account Name"/></h3>
+                        </div>
+                        <group>
+                            <group string="Account Information">
+                                <field name="customer_id" options="{'no_create': True}"/>
+                                <field name="account_type"/>
+                                <field name="opening_date"/>
+                                <field name="closing_date" readonly="1" invisible="status != 'closed'"/>
+                                <field name="branch"/>
+                            </group>
+                            <group string="Balance">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="balance" widget="monetary"/>
+                                <field name="hold_amount" widget="monetary"/>
+                                <field name="available_balance" widget="monetary"/>
+                                <field name="interest_rate"/>
+                            </group>
+                        </group>
+                        <group string="Limits">
+                            <group>
+                                <field name="daily_withdrawal_limit" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="daily_transfer_limit" widget="monetary"/>
+                            </group>
+                        </group>
+                        <group string="Customer Contact">
+                            <group>
+                                <field name="customer_email" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="customer_phone" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Account Tree View -->
+        <record id="view_bank_account_tree" model="ir.ui.view">
+            <field name="name">bank.account.tree</field>
+            <field name="model">bank.account</field>
+            <field name="arch" type="xml">
+                <list string="Bank Accounts">
+                    <field name="account_number"/>
+                    <field name="account_name"/>
+                    <field name="customer_id"/>
+                    <field name="account_type"/>
+                    <field name="balance" widget="monetary"/>
+                    <field name="available_balance" widget="monetary"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="status" widget="badge" 
+                           decoration-success="status == 'active'"
+                           decoration-warning="status == 'frozen'"
+                           decoration-muted="status == 'closed'"/>
+                    <field name="opening_date"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Account Search View -->
+        <record id="view_bank_account_search" model="ir.ui.view">
+            <field name="name">bank.account.search</field>
+            <field name="model">bank.account</field>
+            <field name="arch" type="xml">
+                <search string="Search Accounts">
+                    <field name="account_number"/>
+                    <field name="account_name"/>
+                    <field name="customer_id"/>
+                    <filter string="Active" name="active" 
+                            domain="[('status', '=', 'active')]"/>
+                    <filter string="Frozen" name="frozen" 
+                            domain="[('status', '=', 'frozen')]"/>
+                    <filter string="Savings" name="savings" 
+                            domain="[('account_type', '=', 'savings')]"/>
+                    <filter string="Current" name="current" 
+                            domain="[('account_type', '=', 'current')]"/>
+                    <group>
+                        <filter string="Account Type" name="group_type" 
+                                context="{'group_by': 'account_type'}"/>
+                        <filter string="Status" name="group_status" 
+                                context="{'group_by': 'status'}"/>
+                        <filter string="Customer" name="group_customer" 
+                                context="{'group_by': 'customer_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Account Action -->
+        <record id="action_bank_account" model="ir.actions.act_window">
+            <field name="name">Accounts</field>
+            <field name="res_model">bank.account</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new bank account
+                </p>
+                <p>
+                    Open new accounts for customers with approved KYC.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

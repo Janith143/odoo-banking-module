@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Fixed Deposit Form View -->
+        <record id="view_bank_fixed_deposit_form" model="ir.ui.view">
+            <field name="name">bank.fixed.deposit.form</field>
+            <field name="model">bank.fixed.deposit</field>
+            <field name="arch" type="xml">
+                <form string="Fixed Deposit">
+                    <header>
+                        <button name="action_activate" string="Activate" type="object" 
+                                class="oe_highlight" invisible="status != 'draft'" 
+                                groups="odoo_bank.group_bank_teller"/>
+                        <button name="action_mature" string="Mark as Matured" type="object" 
+                                class="oe_highlight" invisible="status != 'active'" 
+                                groups="odoo_bank.group_bank_teller"/>
+                        <button name="action_renew" string="Renew" type="object" 
+                                invisible="status != 'matured'"/>
+                        <button name="action_close" string="Close &amp; Credit" type="object" 
+                                class="oe_highlight" invisible="status not in ['active', 'matured']"/>
+                        <field name="status" widget="statusbar" 
+                               statusbar_visible="draft,active,matured,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="fd_number" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group string="FD Information">
+                                <field name="customer_id" options="{'no_create': True}"/>
+                                <field name="source_account_id" options="{'no_create': True}"/>
+                                <field name="fd_type"/>
+                                <field name="opening_date"/>
+                            </group>
+                            <group string="Amount">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="principal_amount" widget="monetary"/>
+                                <field name="interest_earned" widget="monetary" readonly="1"/>
+                                <field name="maturity_amount" widget="monetary" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Terms">
+                                <field name="interest_rate"/>
+                                <field name="interest_payout"/>
+                                <field name="tenure_months"/>
+                                <field name="maturity_date" readonly="1"/>
+                            </group>
+                            <group string="Options">
+                                <field name="auto_renew"/>
+                                <field name="premature_penalty"/>
+                            </group>
+                        </group>
+                        <group string="Nominee">
+                            <group>
+                                <field name="nominee_name"/>
+                            </group>
+                            <group>
+                                <field name="nominee_relation"/>
+                            </group>
+                        </group>
+                        <group invisible="status not in ['closed', 'premature_closed']">
+                            <group>
+                                <field name="closure_date" readonly="1"/>
+                                <field name="closure_amount" widget="monetary" readonly="1"/>
+                            </group>
+                        </group>
+                        <group invisible="not renewed_from_id and not renewed_to_id">
+                            <group>
+                                <field name="renewed_from_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="renewed_to_id" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Fixed Deposit Tree View -->
+        <record id="view_bank_fixed_deposit_tree" model="ir.ui.view">
+            <field name="name">bank.fixed.deposit.tree</field>
+            <field name="model">bank.fixed.deposit</field>
+            <field name="arch" type="xml">
+                <list string="Fixed Deposits">
+                    <field name="fd_number"/>
+                    <field name="customer_id"/>
+                    <field name="fd_type"/>
+                    <field name="principal_amount" widget="monetary"/>
+                    <field name="interest_rate"/>
+                    <field name="maturity_amount" widget="monetary"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="opening_date"/>
+                    <field name="maturity_date"/>
+                    <field name="status" widget="badge" 
+                           decoration-success="status == 'active'"
+                           decoration-info="status == 'matured'"
+                           decoration-muted="status == 'closed'"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Fixed Deposit Search View -->
+        <record id="view_bank_fixed_deposit_search" model="ir.ui.view">
+            <field name="name">bank.fixed.deposit.search</field>
+            <field name="model">bank.fixed.deposit</field>
+            <field name="arch" type="xml">
+                <search string="Search Fixed Deposits">
+                    <field name="fd_number"/>
+                    <field name="customer_id"/>
+                    <filter string="Active" name="active" 
+                            domain="[('status', '=', 'active')]"/>
+                    <filter string="Matured" name="matured" 
+                            domain="[('status', '=', 'matured')]"/>
+                    <filter string="Maturing This Month" name="maturing_soon" 
+                            domain="[('maturity_date', '&gt;=', datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0)),
+                                     ('maturity_date', '&lt;=', (datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0) + relativedelta(months=1, days=-1)))]"/>
+                    <group>
+                        <filter string="FD Type" name="group_type" 
+                                context="{'group_by': 'fd_type'}"/>
+                        <filter string="Status" name="group_status" 
+                                context="{'group_by': 'status'}"/>
+                        <filter string="Customer" name="group_customer" 
+                                context="{'group_by': 'customer_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Fixed Deposit Action -->
+        <record id="action_bank_fixed_deposit" model="ir.actions.act_window">
+            <field name="name">Fixed Deposits</field>
+            <field name="res_model">bank.fixed.deposit</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new fixed deposit
+                </p>
+                <p>
+                    Manage fixed deposits and savings plans.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

@@ -140,7 +140,7 @@ class BankCustomer(models.Model):
             'name': 'Customer Accounts',
             'type': 'ir.actions.act_window',
             'res_model': 'bank.account',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('customer_id', '=', self.id)],
             'context': {'default_customer_id': self.id}
         }

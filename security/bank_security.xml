@@ -96,5 +96,45 @@
             <field name="groups" eval="[(4, ref('group_bank_customer'))]"/>
         </record>
         
+        <!-- Account: Manager can see all -->
+        <record id="bank_account_rule_manager" model="ir.rule">
+            <field name="name">Manager: All Accounts</field>
+            <field name="model_id" ref="model_bank_account"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_bank_manager'))]"/>
+        </record>
+        
+        <!-- Transaction: Manager can see all -->
+        <record id="bank_transaction_rule_manager" model="ir.rule">
+            <field name="name">Manager: All Transactions</field>
+            <field name="model_id" ref="model_bank_transaction"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_bank_manager'))]"/>
+        </record>
+        
+        <!-- Transfer: Manager can see all -->
+        <record id="bank_transfer_rule_manager" model="ir.rule">
+            <field name="name">Manager: All Transfers</field>
+            <field name="model_id" ref="model_bank_transfer"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_bank_manager'))]"/>
+        </record>
+        
+        <!-- Loan: Manager can see all -->
+        <record id="bank_loan_rule_manager" model="ir.rule">
+            <field name="name">Manager: All Loans</field>
+            <field name="model_id" ref="model_bank_loan"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_bank_manager'))]"/>
+        </record>
+        
+        <!-- Fixed Deposit: Manager can see all -->
+        <record id="bank_fd_rule_manager" model="ir.rule">
+            <field name="name">Manager: All FDs</field>
+            <field name="model_id" ref="model_bank_fixed_deposit"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_bank_manager'))]"/>
+        </record>
+
     </data>
 </odoo>

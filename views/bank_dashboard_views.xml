@@ -66,8 +66,6 @@
                 </kanban>
             </field>
         </record>
-            </field>
-        </record>
         
         <!-- Audit Log Tree View -->
         <record id="view_bank_audit_log_tree" model="ir.ui.view">

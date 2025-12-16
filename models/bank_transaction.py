@@ -73,22 +73,25 @@ class BankTransaction(models.Model):
         ('amount_positive', 'CHECK(amount > 0)', 'Amount must be positive!'),
     ]
     
-    @api.model
-    def create(self, vals):
-        if vals.get('transaction_number', 'New') == 'New':
-            vals['transaction_number'] = self.env['ir.sequence'].next_by_code('bank.transaction') or 'New'
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('transaction_number', 'New') == 'New':
+                vals['transaction_number'] = self.env['ir.sequence'].next_by_code('bank.transaction') or 'New'
+            
+            # Get account and store balance before
+            if vals.get('account_id'):
+                account = self.env['bank.account'].browse(vals.get('account_id'))
+                vals['balance_before'] = account.balance
         
-        # Get account and store balance before
-        account = self.env['bank.account'].browse(vals.get('account_id'))
-        vals['balance_before'] = account.balance
-        
-        result = super(BankTransaction, self).create(vals)
+        results = super(BankTransaction, self).create(vals_list)
         
         # Auto-complete if not draft
-        if result.status != 'draft':
-            result.action_complete()
+        for result in results:
+            if result.status != 'draft':
+                result.action_complete()
         
-        return result
+        return results
     
     def action_complete(self):
         """Complete transaction and update account balance"""

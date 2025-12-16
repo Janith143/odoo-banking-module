@@ -81,21 +81,23 @@ class BankAccount(models.Model):
         ('account_number_unique', 'unique(account_number)', 'Account number must be unique!'),
     ]
     
-    @api.model
-    def create(self, vals):
-        if vals.get('account_number', 'New') == 'New':
-            # Generate unique account number
-            vals['account_number'] = self._generate_account_number()
-        result = super(BankAccount, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('account_number', 'New') == 'New':
+                # Generate unique account number
+                vals['account_number'] = self._generate_account_number()
+        results = super(BankAccount, self).create(vals_list)
         # Log account creation
-        self.env['bank.audit.log'].create({
-            'action': 'create',
-            'model_name': 'bank.account',
-            'record_id': result.id,
-            'description': f'Account created: {result.account_number}',
-            'user_id': self.env.user.id,
-        })
-        return result
+        for result in results:
+            self.env['bank.audit.log'].create({
+                'action': 'create',
+                'model_name': 'bank.account',
+                'record_id': result.id,
+                'description': f'Account created: {result.account_number}',
+                'user_id': self.env.user.id,
+            })
+        return results
     
     def _generate_account_number(self):
         """Generate unique 12-digit account number"""

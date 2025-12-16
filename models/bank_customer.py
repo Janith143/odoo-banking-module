@@ -84,11 +84,12 @@ class BankCustomer(models.Model):
         ('id_number_unique', 'unique(id_number)', 'ID Number must be unique!'),
     ]
     
-    @api.model
-    def create(self, vals):
-        if vals.get('customer_id', 'New') == 'New':
-            vals['customer_id'] = self.env['ir.sequence'].next_by_code('bank.customer') or 'New'
-        return super(BankCustomer, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('customer_id', 'New') == 'New':
+                vals['customer_id'] = self.env['ir.sequence'].next_by_code('bank.customer') or 'New'
+        return super(BankCustomer, self).create(vals_list)
     
     @api.depends('account_ids')
     def _compute_account_count(self):

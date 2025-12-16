@@ -59,13 +59,14 @@ class BankNotification(models.Model):
         ('urgent', 'Urgent'),
     ], string='Priority', default='normal')
     
-    @api.model
-    def create(self, vals):
-        result = super(BankNotification, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        results = super(BankNotification, self).create(vals_list)
         # Auto-send if not draft
-        if result.status != 'draft':
-            result.action_send()
-        return result
+        for result in results:
+            if result.status != 'draft':
+                result.action_send()
+        return results
     
     def action_send(self):
         """Send notification"""

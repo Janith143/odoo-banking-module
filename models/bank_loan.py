@@ -104,11 +104,12 @@ class BankLoan(models.Model):
         ('tenure_positive', 'CHECK(tenure_months > 0)', 'Tenure must be positive!'),
     ]
     
-    @api.model
-    def create(self, vals):
-        if vals.get('loan_number', 'New') == 'New':
-            vals['loan_number'] = self.env['ir.sequence'].next_by_code('bank.loan') or 'New'
-        return super(BankLoan, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('loan_number', 'New') == 'New':
+                vals['loan_number'] = self.env['ir.sequence'].next_by_code('bank.loan') or 'New'
+        return super(BankLoan, self).create(vals_list)
     
     @api.depends('approved_amount', 'interest_rate', 'tenure_months')
     def _compute_emi_amount(self):

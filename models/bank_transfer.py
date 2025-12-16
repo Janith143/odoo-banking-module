@@ -88,11 +88,12 @@ class BankTransfer(models.Model):
         ('amount_positive', 'CHECK(amount > 0)', 'Amount must be positive!'),
     ]
     
-    @api.model
-    def create(self, vals):
-        if vals.get('transfer_number', 'New') == 'New':
-            vals['transfer_number'] = self.env['ir.sequence'].next_by_code('bank.transfer') or 'New'
-        return super(BankTransfer, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('transfer_number', 'New') == 'New':
+                vals['transfer_number'] = self.env['ir.sequence'].next_by_code('bank.transfer') or 'New'
+        return super(BankTransfer, self).create(vals_list)
     
     @api.depends('transfer_type', 'amount')
     def _compute_fee(self):

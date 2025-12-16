@@ -152,7 +152,7 @@ class BankAccount(models.Model):
             'name': 'Account Transactions',
             'type': 'ir.actions.act_window',
             'res_model': 'bank.transaction',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('account_id', '=', self.id)],
             'context': {'default_account_id': self.id}
         }

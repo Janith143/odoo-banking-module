@@ -63,7 +63,6 @@ class BankAccount(models.Model):
     # Relations
     transaction_ids = fields.One2many('bank.transaction', 'account_id', string='Transactions')
     transaction_count = fields.Integer(string='Transaction Count', compute='_compute_transaction_count')
-    transaction_count = fields.Integer(string='Transaction Count', compute='_compute_transaction_count')
     
     # Security
     pin_hash = fields.Char(string='PIN Hash', groups='base.group_system')

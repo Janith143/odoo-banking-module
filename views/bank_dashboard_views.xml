@@ -72,9 +72,9 @@
                     <field name="model_name"/>
                     <field name="description"/>
                     <filter string="Today" name="today" 
-                            domain="[('timestamp', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0))]"/>
+                            domain="[('timestamp', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
                     <filter string="This Week" name="this_week" 
-                            domain="[('timestamp', '&gt;=', (datetime.datetime.now() - datetime.timedelta(days=7)))]"/>
+                            domain="[('timestamp', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00'))]"/>
                     <filter string="Errors" name="errors" 
                             domain="[('severity', 'in', ['error', 'critical'])]"/>
                     <group>

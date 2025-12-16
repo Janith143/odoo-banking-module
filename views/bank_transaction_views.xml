@@ -7,7 +7,7 @@
             <field name="name">bank.transaction.form</field>
             <field name="model">bank.transaction</field>
             <field name="arch" type="xml">
-                <form string="Bank Transaction" create="false" edit="false">
+                <form string="Bank Transaction" edit="false">
                     <header>
                         <button name="action_complete" string="Complete" type="object" 
                                 class="oe_highlight" invisible="status != 'pending'" 
@@ -68,7 +68,7 @@
             <field name="name">bank.transaction.tree</field>
             <field name="model">bank.transaction</field>
             <field name="arch" type="xml">
-                <list string="Transactions" create="false">
+                <list string="Transactions">
                     <field name="transaction_date"/>
                     <field name="transaction_number"/>
                     <field name="account_id"/>

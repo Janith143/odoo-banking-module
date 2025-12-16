@@ -10,7 +10,7 @@
                 <form string="Bank Transaction">
                     <header>
                         <button name="action_complete" string="Complete" type="object" 
-                                class="oe_highlight" invisible="status != 'pending'" 
+                                class="oe_highlight" invisible="status not in ['draft', 'pending']" 
                                 groups="odoo_bank.group_bank_teller"/>
                         <button name="action_reverse" string="Reverse" type="object" 
                                 invisible="status != 'completed'" 
